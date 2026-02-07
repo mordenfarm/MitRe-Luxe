@@ -5,15 +5,14 @@ import { HANDBAG_IMAGES } from '../constants';
 
 interface HeroProps {
   onImageClick: (url: string) => void;
-  // Added onNavigate to the props interface to fix the scope error
   onNavigate: (page: 'home' | 'press') => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ onImageClick, onNavigate }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const bagPartsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const textGroupRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<SVGFETurbulenceElement>(null);
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
@@ -21,35 +20,44 @@ const Hero: React.FC<HeroProps> = ({ onImageClick, onNavigate }) => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
-      // Initial Entrance
-      tl.from(bagPartsRef.current, {
-        y: (i) => (i % 2 === 0 ? 200 : -200),
+      // Entrance animation for text
+      tl.from(textGroupRef.current, {
+        y: 40,
         opacity: 0,
-        scale: 0.8,
-        duration: 2,
-        stagger: 0.1,
-        ease: 'expo.out',
+        duration: 1.5,
+        ease: 'power4.out'
       });
 
-      tl.from(titleRef.current, {
+      // Entrance animation for the trio of images
+      tl.from(imagesRef.current, {
         y: 60,
         opacity: 0,
-        letterSpacing: '0.2em',
-        duration: 2,
-        ease: 'power4.out'
-      }, "-=1.5");
+        scale: 0.95,
+        stagger: 0.2,
+        duration: 1.8,
+        ease: 'expo.out'
+      }, "-=1.2");
 
-      // Scroll Scrub
-      gsap.to(wrapperRef.current, {
-        scale: 1.15,
-        opacity: 0,
-        y: -150,
+      // Warbly Water Scroll Effect
+      // Animating the turbulence creates that "liquid" ripple feel across all images
+      gsap.to(filterRef.current, {
+        attr: { baseFrequency: "0.03 0.08" },
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top top',
-          end: '+=1000',
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+        }
+      });
+
+      // Subtle parallax for the image container
+      gsap.to(imagesRef.current, {
+        y: (i) => (i + 1) * 20,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
           scrub: true,
-          pin: true,
         }
       });
     }, containerRef);
@@ -57,56 +65,94 @@ const Hero: React.FC<HeroProps> = ({ onImageClick, onNavigate }) => {
     return () => ctx.revert();
   }, []);
 
+  const heroImages = [HANDBAG_IMAGES[0], HANDBAG_IMAGES[1], HANDBAG_IMAGES[2]];
+
   return (
     <section 
       ref={containerRef}
-      className="relative h-screen w-full flex flex-col items-center justify-center bg-transparent overflow-hidden"
+      className="relative min-h-[90vh] md:min-h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden pt-24 pb-12"
     >
-      <div ref={wrapperRef} className="relative w-full h-full flex flex-col items-center justify-center">
-        <div className="relative z-10 text-center mb-24 pointer-events-none">
-          <h1 
-            ref={titleRef}
-            className="text-8xl md:text-[12rem] serif leading-none tracking-tight text-black uppercase"
-          >
-            MitRe <br />
-            <span className="italic text-[#FF007F] opacity-80">Luxe</span>
+      {/* SVG Filter for the "Warbly Water" effect */}
+      <svg className="fixed h-0 w-0 pointer-events-none" aria-hidden="true">
+        <filter id="warble-filter">
+          <feTurbulence 
+            ref={filterRef}
+            type="fractalNoise" 
+            baseFrequency="0.001 0.001" 
+            numOctaves="2" 
+            result="noise" 
+          />
+          <feDisplacementMap 
+            in="SourceGraphic" 
+            in2="noise" 
+            scale="45" 
+            xChannelSelector="R" 
+            yChannelSelector="G" 
+          />
+        </filter>
+      </svg>
+
+      <div className="relative z-20 w-full max-w-7xl flex flex-col items-center px-4">
+        
+        {/* Branding: MitRe (Black) Luxe (Pink) */}
+        <div ref={textGroupRef} className="text-center mb-12 md:mb-20">
+          <h1 className="text-6xl md:text-[10rem] serif leading-none tracking-tighter uppercase mb-4 flex items-center justify-center gap-2 md:gap-6">
+            <span className="text-black">MitRe</span> 
+            <span className="text-[#FF007F] italic">Luxe</span>
           </h1>
-          <p className="text-[11px] tracking-[2.5em] uppercase text-black/40 mt-12 font-black translate-x-[1.2em]">
-            Autumn Anthology
-          </p>
+          <div className="flex flex-col items-center">
+            <div className="h-[1px] md:h-[2px] w-12 md:w-20 bg-[#FF007F] mb-4 md:mb-6 opacity-60"></div>
+            <p className="text-[9px] md:text-sm tracking-[0.8em] md:tracking-[1.4em] uppercase text-black font-black ml-[0.8em] md:ml-[1.4em]">
+              Woman with style
+            </p>
+          </div>
         </div>
 
-        <div className="relative w-full max-w-2xl h-[40vh] md:h-[50vh] flex items-center justify-center">
-          <div className="grid grid-cols-2 grid-rows-2 gap-8 w-full h-full p-4">
-            {[0, 1, 2, 3].map((i) => (
-              <div 
-                key={i} 
-                ref={(el) => (bagPartsRef.current[i] = el)}
-                className="relative overflow-hidden bg-white/10 backdrop-blur-3xl border border-black/5 cursor-pointer group rounded-sm shadow-2xl transition-all duration-700 hover:border-[#FF007F]/20"
-                onClick={() => onImageClick(HANDBAG_IMAGES[0])}
-              >
-                <img 
-                  src={HANDBAG_IMAGES[0]} 
-                  alt="MitRe Luxe Hero" 
-                  className="absolute w-[220%] h-[220%] max-w-none object-contain transition-transform duration-[3s] ease-out group-hover:scale-110"
-                  style={{
-                    top: i < 2 ? '0' : '-100%',
-                    left: i % 2 === 0 ? '0' : '-100%'
-                  }}
-                />
+        {/* 3 Images in 1 Row - Warbly and Responsive */}
+        <div className="flex flex-row items-center justify-center gap-2 md:gap-10 w-full max-w-6xl">
+          {heroImages.map((img, i) => (
+            <div 
+              key={i}
+              ref={(el) => (imagesRef.current[i] = el)}
+              className="relative flex-1 aspect-[3/4] md:aspect-[4/5] overflow-hidden bg-[#fafafa] border border-black/[0.03] shadow-sm cursor-pointer group rounded-sm"
+              onClick={() => onImageClick(img)}
+            >
+              <img 
+                src={img} 
+                alt={`MitRe Luxe Collection ${i + 1}`} 
+                className="w-full h-full object-contain p-2 md:p-12 transition-transform duration-[2s] group-hover:scale-110"
+                style={{ filter: 'url(#warble-filter)' }}
+              />
+              
+              {/* Subtle Overlay on hover */}
+              <div className="absolute inset-0 bg-[#FF007F]/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              
+              {/* Image Label for Desktop */}
+              <div className="absolute bottom-4 left-4 hidden md:block opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                 <span className="text-[8px] font-black tracking-widest text-black bg-white px-3 py-1 uppercase shadow-sm">
+                    Select Piece 0{i+1}
+                 </span>
               </div>
-            ))}
-          </div>
-          
-          <div 
-            ref={(el) => (bagPartsRef.current[4] = el)}
-            className="absolute z-20 w-44 h-44 rounded-full border border-black/10 bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center shadow-[0_30px_60px_rgba(0,0,0,0.1)] cursor-pointer hover:bg-black hover:text-white transition-all duration-700 group scale-90"
-            // Now onNavigate is available in scope
-            onClick={() => onNavigate('press')}
-          >
-            <span className="font-black text-[10px] tracking-[0.5em] leading-none mb-3 text-black/30 group-hover:text-white/50">MMXXIV</span>
-            <span className="font-black text-2xl leading-none text-black group-hover:text-white serif italic">Inquiry</span>
-          </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-16 md:mt-24 flex flex-col items-center gap-6">
+           <button 
+             onClick={() => onNavigate('press')}
+             className="group relative overflow-hidden px-12 py-4 border border-black rounded-full transition-all duration-500 hover:border-[#FF007F]"
+           >
+             <div className="absolute inset-0 bg-[#FF007F] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></div>
+             <span className="relative z-10 text-[9px] md:text-[11px] font-black tracking-[0.6em] uppercase text-black group-hover:text-white transition-colors duration-500">
+               Enter The Atelier
+             </span>
+           </button>
+           
+           <div className="hidden md:flex flex-col items-center gap-4">
+              <span className="text-[7px] font-black tracking-[0.4em] text-black/20 uppercase">Autumn Reveal MMXXIV</span>
+              <div className="w-[1px] h-12 bg-gradient-to-b from-black/20 to-transparent"></div>
+           </div>
         </div>
       </div>
     </section>

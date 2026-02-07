@@ -10,40 +10,46 @@ const Footer: React.FC = () => {
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // Create letters array for staggering
-      const letters = letterRefs.current.filter(Boolean);
+    if (!containerRef.current || !nameRef.current) return;
 
-      // Reveal animation timeline
+    const ctx = gsap.context(() => {
+      const letters = letterRefs.current.filter(Boolean) as HTMLSpanElement[];
+
+      // Cinematic Split-Reveal
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: nameRef.current,
-          start: 'top 85%',
+          start: 'top 90%',
           toggleActions: 'play none none reverse',
         }
       });
 
       tl.fromTo(letters, 
         { 
-          y: 80, 
+          y: 120, 
           opacity: 0, 
-          rotateX: -45,
-          filter: 'blur(10px)',
+          rotateX: -70,
+          filter: 'blur(15px)',
+          scale: 0.9,
         },
         {
           y: 0,
           opacity: 1,
           rotateX: 0,
           filter: 'blur(0px)',
-          duration: 1.2,
-          stagger: 0.04,
-          ease: 'power4.out',
+          scale: 1,
+          duration: 1.8,
+          stagger: {
+            each: 0.05,
+            from: "center"
+          },
+          ease: 'expo.out',
         }
       );
 
-      // Add a subtle drift to the name on scroll
+      // Subtle parallax on scroll
       gsap.to(nameRef.current, {
-        y: -30,
+        y: -50,
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top bottom',
@@ -67,43 +73,44 @@ const Footer: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center">
         
-        {/* Cinematic Mitchell Mhizha Signature Reveal */}
-        <div className="relative mb-64 text-center select-none">
+        {/* The Signature Sequence */}
+        <div className="relative mb-64 text-center select-none perspective-1000">
           <h2 
             ref={nameRef}
-            className="serif text-[10vw] md:text-[8rem] uppercase text-black leading-none font-light tracking-[0.2em] flex flex-wrap justify-center gap-x-6 md:gap-x-12"
+            className="serif text-[12vw] md:text-[9rem] uppercase text-black leading-none font-light tracking-[-0.02em] flex flex-wrap justify-center gap-x-8 md:gap-x-16"
           >
             <div className="flex">
               {firstName.map((char, i) => (
-                <span key={`f-${i}`} ref={el => letterRefs.current[i] = el} className="inline-block transform-gpu">
+                <span key={`f-${i}`} ref={el => letterRefs.current[i] = el} className="inline-block transform-gpu will-change-transform">
                   {char}
                 </span>
               ))}
             </div>
             <div className="flex">
               {lastName.map((char, i) => (
-                <span key={`l-${i}`} ref={el => letterRefs.current[firstName.length + i] = el} className="inline-block italic opacity-60 transform-gpu">
+                <span key={`l-${i}`} ref={el => letterRefs.current[firstName.length + i] = el} className="inline-block italic opacity-50 transform-gpu will-change-transform">
                   {char}
                 </span>
               ))}
             </div>
           </h2>
           
-          <div className="mt-12 flex flex-col items-center gap-6">
-             <div className="h-[1px] w-32 bg-black/10"></div>
-             <p className="text-[9px] tracking-[1.8em] font-black uppercase text-black/30">Creative Director</p>
+          <div className="mt-16 flex flex-col items-center gap-8">
+             <div className="h-[1px] w-48 bg-black/10"></div>
+             <p className="text-[10px] tracking-[2.2em] font-black uppercase text-black/30 translate-x-[1.1em]">Creative Director</p>
           </div>
         </div>
 
-        <div className="w-full h-[1px] bg-black/5 mb-12"></div>
+        <div className="w-full h-[1px] bg-black/5 mb-16"></div>
 
-        <div className="w-full flex flex-col md:flex-row justify-between items-center text-[8px] tracking-[0.8em] text-black/20 font-black uppercase gap-10">
-            <span>© MMXXIV MitRe Luxe London</span>
-            <div className="flex gap-16">
-                <span className="hover:text-black cursor-pointer transition-colors">Instagram</span>
+        <div className="w-full flex flex-col md:flex-row justify-between items-center text-[9px] tracking-[0.8em] text-black/30 font-black uppercase gap-12">
+            <span className="hover:text-black transition-colors cursor-pointer">© MMXXIV MitRe Luxe London</span>
+            <div className="flex gap-20">
+                <span className="hover:text-[#FF007F] cursor-pointer transition-colors">Instagram</span>
                 <span className="hover:text-black cursor-pointer transition-colors">Vogue</span>
+                <span className="hover:text-black cursor-pointer transition-colors">Showroom</span>
             </div>
-            <span className="text-[#FF007F]/40">Atelier Signature</span>
+            <span className="text-[#FF007F]/60 font-black animate-pulse">Atelier de Luxe</span>
         </div>
       </div>
     </footer>

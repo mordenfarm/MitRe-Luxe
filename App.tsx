@@ -1,10 +1,11 @@
 
-import React, { useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 
 import Navbar from './components/Navbar';
+import Cursor from './components/Cursor';
 import Hero from './sections/Hero';
 import CinematicSequence from './sections/CinematicSequence';
 import LuxuryAccessoryScroll from './sections/LuxuryAccessoryScroll';
@@ -23,7 +24,6 @@ const App: React.FC = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
   useLayoutEffect(() => {
-    // Smoother scroll experience
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -39,7 +39,14 @@ const App: React.FC = () => {
     }
     requestAnimationFrame(raf);
 
-    lenis.on('scroll', ScrollTrigger.update);
+    lenis.on('scroll', (e: any) => {
+      ScrollTrigger.update();
+      const progress = document.getElementById('scroll-progress');
+      if (progress) {
+        const scrollPercent = (e.scroll / (document.body.scrollHeight - window.innerHeight)) * 100;
+        progress.style.width = `${scrollPercent}%`;
+      }
+    });
 
     const handlePopState = (e: PopStateEvent) => {
       if (!e.state?.lightbox) setLightbox(null);
@@ -75,19 +82,22 @@ const App: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-white text-black selection:bg-[#FF007F] selection:text-white overflow-x-hidden">
-      {/* Fixed Video Background - Less Blur, Higher Visibility */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-40 overflow-hidden bg-white">
+      <Cursor />
+      
+      {/* Fixed Video Background - Visibility Adjusted */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-30 overflow-hidden bg-white">
         <video 
           autoPlay 
           muted 
           loop 
           playsInline 
           className="w-full h-full object-cover scale-105"
-          style={{ filter: 'blur(15px) saturate(0.8)' }}
+          style={{ filter: 'blur(8px) saturate(0.9)' }}
+          onError={(e) => console.log('Video load error - falling back to clean gradient')}
         >
           <source src="https://drive.google.com/uc?export=download&id=1G47iwN0VwhNzdWJ0xWM4I5abmdeXjfs3" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-white/60" />
       </div>
 
       <Navbar onNavigate={navigateTo} currentPage={currentPage} />
@@ -96,7 +106,11 @@ const App: React.FC = () => {
         <main className="relative">
           {currentPage === 'home' ? (
             <>
-              <Hero onImageClick={(url) => openLightbox(HANDBAG_IMAGES.indexOf(url), HANDBAG_IMAGES)} />
+              {/* Added onNavigate={navigateTo} to Hero component */}
+              <Hero 
+                onImageClick={(url) => openLightbox(HANDBAG_IMAGES.indexOf(url), HANDBAG_IMAGES)} 
+                onNavigate={navigateTo}
+              />
               <CinematicSequence onImageClick={(url) => openLightbox(HANDBAG_IMAGES.indexOf(url), HANDBAG_IMAGES)} />
               <LuxuryAccessoryScroll onImageClick={(url) => openLightbox(ACCESSORY_IMAGES.indexOf(url), ACCESSORY_IMAGES)} />
               <ArtisanGallery onImageClick={(url) => openLightbox(HANDBAG_IMAGES.indexOf(url), HANDBAG_IMAGES)} />
@@ -112,22 +126,22 @@ const App: React.FC = () => {
 
       {lightbox && (
         <div 
-          className="fixed inset-0 z-[1000] bg-white/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-300"
+          className="fixed inset-0 z-[1000] bg-white/98 backdrop-blur-2xl flex flex-col items-center justify-center animate-in fade-in duration-300"
           onClick={closeLightbox}
         >
           <button 
-            className="absolute top-12 left-12 text-black font-black tracking-[0.4em] uppercase text-[10px] border border-black px-8 py-4 hover:bg-black hover:text-white transition-all z-50 flex items-center gap-4"
+            className="absolute top-12 left-12 text-black font-black tracking-[0.5em] uppercase text-[10px] border-b-2 border-black py-2 hover:text-[#FF007F] hover:border-[#FF007F] transition-all z-50 flex items-center gap-4"
             onClick={closeLightbox}
           >
-            <span>←</span> BACK
+            <span>←</span> CLOSE PREVIEW
           </button>
           
-          <div className="relative w-full h-full flex items-center justify-center p-8 md:p-24" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full flex items-center justify-center p-12 md:p-32" onClick={(e) => e.stopPropagation()}>
             <img 
               key={lightbox.index}
               src={lightbox.images[lightbox.index]} 
-              className="w-full h-full object-contain drop-shadow-2xl animate-in fade-in zoom-in-95 duration-500"
-              alt="Maximized product"
+              className="w-full h-full object-contain drop-shadow-[0_50px_100px_rgba(0,0,0,0.1)] animate-in fade-in zoom-in-95 duration-700"
+              alt="Luxury Detail"
             />
           </div>
         </div>

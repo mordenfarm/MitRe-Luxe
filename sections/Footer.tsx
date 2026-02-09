@@ -110,7 +110,7 @@ const Footer: React.FC = () => {
                 <span className="hover:text-black cursor-pointer transition-colors">Vogue</span>
                 <span className="hover:text-black cursor-pointer transition-colors">Showroom</span>
             </div>
-            <span className="text-[#FF007F]/60 font-black animate-pulse">Atelier de Luxe</span>
+            <span className="text-[#FF007F]/60 font-black animate-pulse">Luxury Boutique</span>
         </div>
       </div>
     </footer>

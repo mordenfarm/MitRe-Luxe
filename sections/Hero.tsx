@@ -104,7 +104,7 @@ const Hero: React.FC<HeroProps> = ({ onImageClick, onNavigate }) => {
            >
              <div className="absolute inset-0 bg-[#FF007F] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></div>
              <span className="relative z-10 text-[10px] font-black tracking-[0.6em] uppercase text-black group-hover:text-white transition-colors duration-500">
-               Enter The Atelier
+               Enter The Showroom
              </span>
            </button>
         </div>

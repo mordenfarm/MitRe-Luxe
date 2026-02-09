@@ -22,7 +22,7 @@ const PressOrder: React.FC<PressOrderProps> = ({ onImageClick }) => {
         <header className="mb-24">
           <span className="text-[10px] font-black tracking-[1em] text-[#FF007F] uppercase mb-8 block">Inventory MMXXIV</span>
           <h1 className="text-6xl md:text-9xl serif text-black uppercase leading-[0.8] tracking-tighter">
-            Atelier <span className="italic">Catalog</span>
+            Full <span className="italic">Catalog</span>
           </h1>
         </header>
 

@@ -55,23 +55,31 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     return () => ctx.revert();
   }, [currentPage]);
 
+  const handleToggle = () => {
+    if (currentPage === 'home') {
+      onNavigate('press');
+    } else {
+      onNavigate('home');
+    }
+  };
+
   return (
     <header 
       ref={navRef}
-      className="fixed top-0 left-0 w-full z-[100] px-12 py-8 flex justify-between items-center transition-all duration-700"
+      className="fixed top-0 left-0 w-full z-[100] px-6 md:px-12 py-6 md:py-8 flex justify-between items-center transition-all duration-700"
     >
       <div 
         onClick={() => onNavigate('home')}
-        className="text-3xl font-black tracking-tighter serif cursor-pointer group flex items-center gap-2"
+        className="text-2xl md:text-3xl font-black tracking-tighter serif cursor-pointer group flex items-center gap-2"
       >
         <span className="text-black group-hover:text-[#FF007F] transition-colors">MitRe</span>
         <span className="text-[#FF007F] group-hover:text-black transition-colors italic">Luxe</span>
       </div>
 
-      <nav className="flex gap-16 items-center">
+      <nav className="flex gap-8 md:gap-16 items-center">
         <button 
-          onClick={() => onNavigate('press')}
-          className={`text-[9px] font-black tracking-[0.6em] uppercase transition-all ${currentPage === 'press' ? 'text-[#FF007F]' : 'hover:text-[#FF007F]'}`}
+          onClick={handleToggle}
+          className={`text-[9px] font-black tracking-[0.4em] md:tracking-[0.6em] uppercase transition-all ${currentPage === 'press' ? 'text-[#FF007F]' : 'hover:text-[#FF007F]'}`}
         >
           {currentPage === 'press' ? 'VIEW HOME' : 'PRESS ORDER'}
         </button>

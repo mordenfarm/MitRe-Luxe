@@ -115,7 +115,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           <div className="space-y-6 md:space-y-8">
             <span className="text-[9px] md:text-[10px] font-black tracking-[0.8em] text-[#FF007F] uppercase block animate-pulse">Introduction</span>
             <h2 className="text-4xl md:text-7xl serif text-black leading-tight uppercase tracking-tighter">
-              Welcome <br/><span className="italic text-[#FF007F]">Atelier.</span>
+              Welcome <br/><span className="italic text-[#FF007F]">Boutique.</span>
             </h2>
             <p className="text-black/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
               Welcome to the digital showroom of <span className="text-black font-bold">Mitchel Mhizha</span>, 

@@ -17,49 +17,41 @@ const PressOrder: React.FC<PressOrderProps> = ({ onImageClick }) => {
   };
 
   return (
-    <section className="pt-48 pb-32 px-10 md:px-20 min-h-screen">
+    <section className="pt-48 pb-32 px-10 md:px-20 min-h-screen bg-white">
       <div className="max-w-screen-2xl mx-auto">
-        <header className="mb-32 flex flex-col md:flex-row md:items-end justify-between gap-12 border-b border-black/5 pb-16">
-          <div className="max-w-3xl">
-            <span className="text-[10px] font-black tracking-[1em] text-[#FF007F] uppercase mb-8 block">Exclusive Catalog</span>
-            <h1 className="text-6xl md:text-9xl serif text-black uppercase leading-[0.8] tracking-tighter">
-              Private <br /> <span className="italic">Collection</span>
-            </h1>
-          </div>
-          <p className="text-black/30 text-[10px] md:text-xs font-bold max-w-xs leading-relaxed uppercase tracking-widest">
-            Direct orders via our London Atelier. Global shipping available on all items.
-          </p>
+        <header className="mb-24">
+          <span className="text-[10px] font-black tracking-[1em] text-[#FF007F] uppercase mb-8 block">Inventory MMXXIV</span>
+          <h1 className="text-6xl md:text-9xl serif text-black uppercase leading-[0.8] tracking-tighter">
+            Atelier <span className="italic">Catalog</span>
+          </h1>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-24">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12">
           {allProducts.map((img, i) => (
-            <div 
-              key={i} 
-              className="group flex flex-col"
-            >
+            <div key={i} className="group flex flex-col">
               <div 
-                className="relative aspect-square overflow-hidden bg-[#FBFBFA] mb-8 cursor-pointer shadow-sm group-hover:shadow-2xl transition-all duration-1000"
+                className="relative aspect-square overflow-hidden bg-neutral-50 mb-6 cursor-pointer border border-black/5"
                 onClick={() => onImageClick(i, allProducts)}
               >
                 <img 
                   src={img} 
                   alt="" 
-                  className="w-full h-full object-contain p-10 transition-transform duration-[2s] ease-out group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity bg-white/80 backdrop-blur-md px-4 py-2 text-[10px] font-black border border-black/5">
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white px-4 py-2 text-[10px] font-black shadow-lg">
                   $19.99
                 </div>
               </div>
               
-              <div className="flex flex-col items-center text-center space-y-4">
+              <div className="space-y-4">
                 <button 
                   onClick={() => handleOrder(img)}
-                  className="w-full text-[9px] font-black tracking-[0.5em] uppercase py-4 border border-black hover:bg-black hover:text-white transition-all duration-500"
+                  className="w-full text-[8px] md:text-[9px] font-black tracking-[0.4em] uppercase py-4 border border-black hover:bg-black hover:text-white transition-all duration-500"
                 >
-                  Order via WhatsApp
+                  Quick Order
                 </button>
-                <p className="text-[8px] tracking-[0.6em] text-black/20 uppercase font-black">
-                  Product REF: {1000 + i}
+                <p className="text-[8px] tracking-[0.4em] text-black/30 uppercase font-black text-center">
+                  REF-{1000 + i}
                 </p>
               </div>
             </div>

@@ -1,11 +1,12 @@
 
-import React, { useState, useCallback, useRef, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useRef, useLayoutEffect, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 
 import Navbar from './components/Navbar';
 import Cursor from './components/Cursor';
+import WelcomeModal from './components/WelcomeModal';
 import Hero from './sections/Hero';
 import CinematicSequence from './sections/CinematicSequence';
 import LuxuryAccessoryScroll from './sections/LuxuryAccessoryScroll';
@@ -21,6 +22,7 @@ gsap.registerPlugin(ScrollTrigger);
 const App: React.FC = () => {
   const [lightbox, setLightbox] = useState<{ images: string[], index: number } | null>(null);
   const [currentPage, setCurrentPage] = useState<'home' | 'press'>('home');
+  const [showWelcome, setShowWelcome] = useState(true);
   const lenisRef = useRef<Lenis | null>(null);
 
   useLayoutEffect(() => {
@@ -55,11 +57,18 @@ const App: React.FC = () => {
     };
     window.addEventListener('popstate', handlePopState);
 
+    // Initial Scroll Control
+    if (showWelcome) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+
     return () => {
       lenis.destroy();
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [showWelcome]);
 
   const navigateTo = useCallback((page: 'home' | 'press') => {
     ScrollTrigger.getAll().forEach(t => t.kill());
@@ -80,11 +89,20 @@ const App: React.FC = () => {
     else setLightbox(null);
   }, []);
 
+  const handleWelcomeClose = () => {
+    setShowWelcome(false);
+    if (lenisRef.current) lenisRef.current.start();
+    // Force a ScrollTrigger refresh after the modal is gone
+    setTimeout(() => ScrollTrigger.refresh(), 100);
+  };
+
   return (
-    <div className="relative min-h-screen bg-white text-black selection:bg-[#FF007F] selection:text-white overflow-x-hidden">
+    <div className={`relative min-h-screen bg-white text-black selection:bg-[#FF007F] selection:text-white overflow-x-hidden ${showWelcome ? 'h-screen overflow-hidden' : ''}`}>
       <Cursor />
       
-      {/* Fixed Video Background - Visibility Adjusted */}
+      {showWelcome && <WelcomeModal onClose={handleWelcomeClose} />}
+
+      {/* Fixed Video Background */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-30 overflow-hidden bg-white">
         <video 
           autoPlay 
@@ -93,20 +111,18 @@ const App: React.FC = () => {
           playsInline 
           className="w-full h-full object-cover scale-105"
           style={{ filter: 'blur(8px) saturate(0.9)' }}
-          onError={(e) => console.log('Video load error - falling back to clean gradient')}
         >
           <source src="https://drive.google.com/uc?export=download&id=1G47iwN0VwhNzdWJ0xWM4I5abmdeXjfs3" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-white/60" />
       </div>
 
-      <Navbar onNavigate={navigateTo} currentPage={currentPage} />
+      {!showWelcome && <Navbar onNavigate={navigateTo} currentPage={currentPage} />}
       
       <div className="relative z-10">
         <main className="relative">
           {currentPage === 'home' ? (
             <>
-              {/* Added onNavigate={navigateTo} to Hero component */}
               <Hero 
                 onImageClick={(url) => openLightbox(HANDBAG_IMAGES.indexOf(url), HANDBAG_IMAGES)} 
                 onNavigate={navigateTo}

@@ -8,7 +8,7 @@ interface PressOrderProps {
 
 const PressOrder: React.FC<PressOrderProps> = ({ onImageClick }) => {
   const allProducts = [...HANDBAG_IMAGES, ...ACCESSORY_IMAGES];
-  const WHATSAPP_NUMBER = "263782456936";
+  const WHATSAPP_NUMBER = "263786001055"; // Updated as requested
 
   const handleOrder = (imageUrl: string) => {
     const message = `Greetings MitRe Luxe, I would like to initiate an order for this piece: ${imageUrl}`;

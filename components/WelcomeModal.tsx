@@ -119,7 +119,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
             </h2>
             <p className="text-black/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
               Welcome to the digital showroom of <span className="text-black font-bold">Mitchel Mhizha</span>, 
-              a luxury goods reseller focused on authenticated, high-demand designer products. This platform serves as her main marketing and sales space, showcasing a carefully selected range of luxury handbags, footwear, eyewear, and fine jewelry from globally recognized brands such as Gucci, Chanel, Coach and so many to mention.
+              a luxury goods reseller focused on authenticated, high-demand designer products. This platform serves as a preview of our curated collections as we prepare for a major physical expansion in the luxury market.
             </p>
           </div>
         );
@@ -128,27 +128,27 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           <div className="space-y-6 md:space-y-8">
             <span className="text-[9px] md:text-[10px] font-black tracking-[0.8em] text-[#FF007F] uppercase block">Opportunity</span>
             <h2 className="text-4xl md:text-7xl serif text-black leading-tight uppercase tracking-tighter">
-              The <span className="italic">Vision.</span>
+              Boutique <span className="italic">Launch.</span>
             </h2>
             <div className="bg-neutral-50 p-6 md:p-12 border-l-4 border-[#FF007F] space-y-4 md:space-y-6 shadow-sm">
-              <p className="text-sm md:text-lg text-black/70">
-                Mitchel Mhizha is opening a limited investment opportunity for one capital partner at <span className="text-black font-bold text-lg md:text-xl">$500</span>. This is a 1:1 matched investment:
+              <p className="text-sm md:text-lg text-black/70 leading-relaxed">
+                Mitchel Mhizha is seeking an initial investment of <span className="text-black font-bold text-lg md:text-xl">$1,000 or more</span>. This capital is designated for the transition into a flagship physical space:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 text-[10px] md:text-[11px] font-black tracking-[0.2em] uppercase text-black">
                 <div className="bg-white p-4 md:p-6 border border-black/5 shadow-sm">
-                  <span className="opacity-30 block mb-1 md:mb-2">Mitchel's Part</span>
-                  <span className="text-lg md:text-xl">$500 (Secured)</span>
+                  <span className="opacity-30 block mb-1 md:mb-2 text-xs">Launch Target</span>
+                  <span className="text-lg md:text-xl text-[#FF007F]">$1,000+</span>
                 </div>
                 <div className="bg-white p-4 md:p-6 border border-black/5 shadow-sm">
-                  <span className="opacity-30 block mb-1 md:mb-2">Partner Part</span>
-                  <span className="text-lg md:text-xl text-[#FF007F]">$500</span>
+                  <span className="opacity-30 block mb-1 md:mb-2 text-xs">Primary Focus</span>
+                  <span className="text-lg md:text-xl">Rentals & Setup</span>
                 </div>
               </div>
               <div className="pt-3 md:pt-4 border-t border-black/5">
                 <p className="text-xs md:text-sm font-black text-black uppercase tracking-widest">
-                  Total Starting Capital: <span className="text-[#FF007F]">$1,000</span>
+                  Key Milestones: <span className="text-[#FF007F]">Prime Location Rent • Boutique Interiors • Core Stock</span>
                 </p>
-                <p className="text-[9px] md:text-[10px] text-black/40 mt-1 uppercase font-bold">Directly allocated to resale inventory</p>
+                <p className="text-[9px] md:text-[10px] text-black/40 mt-1 uppercase font-bold">Establishing a permanent high-end presence</p>
               </div>
             </div>
           </div>
@@ -156,12 +156,12 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       case 3:
         return (
           <div className="space-y-6 md:space-y-8">
-            <span className="text-[9px] md:text-[10px] font-black tracking-[0.8em] text-[#FF007F] uppercase block">Growth</span>
+            <span className="text-[9px] md:text-[10px] font-black tracking-[0.8em] text-[#FF007F] uppercase block">Strategy</span>
             <h2 className="text-4xl md:text-7xl serif text-black leading-tight uppercase tracking-tighter">
-              Why <span className="italic">Now.</span>
+              Scaling <span className="italic">Success.</span>
             </h2>
             <p className="text-black/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
-              Sourcing channels are already secured, and the digital showroom is live. With increased capital, Mitchel can move from selling individual items to offering full, coordinated luxury collections (for example: handbag, shoes, and accessories). This strategy increases sales value per customer and improves overall profit margins.
+              Sourcing channels for authenticated luxury goods are already secured. Moving into a dedicated physical boutique allows for personalized client experiences and the ability to showcase complete "head-to-toe" luxury looks. This physical presence significantly enhances brand credibility and unlocks higher profit margins through collection-based selling.
             </p>
           </div>
         );
@@ -173,7 +173,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               Next <span className="italic">Steps.</span>
             </h2>
             <p className="text-black/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
-              You are encouraged to review the current inventory on this platform to see the quality and authenticity of the products. For those interested in participating in a fast-turnover, luxury-backed resale venture, Mitchel is open to discussing projected returns and the profit-sharing structure.
+              We invite potential investors to explore our current inventory to understand the brand's aesthetic and quality standards. For those interested in funding a high-turnover luxury venture, Mitchel is available for direct consultation regarding profit-sharing structures and the physical store rollout timeline.
             </p>
           </div>
         );
